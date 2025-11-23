@@ -1,14 +1,11 @@
 import psycopg2
-import os
 
-# ЛЕЧИМ КОДИРОВКУ НА WINDOWS:
-os.environ["PGCLIENTENCODING"] = "utf-8"
 
 DATABASE = 'tasks_app.db'
 
 CONNECT_DB = {
     'user': 'postgres',
-    'password': '123',
+    'password': 'admin',
     'host': 'localhost',
     'port': '5432',
     'database': 'tasks_app'
@@ -75,7 +72,7 @@ def add_task():
         try:
             cursor.execute("""
                         INSERT INTO tasks (title, priority_id) 
-                        VALUES (%s, (SELECT id FROM priorities WHERE name = %s))
+                        VALUES (%s, (SELECT id FROM priorities WHERE name ILIKE %s))
                     """, (title, priority))
 
             conn.commit()
